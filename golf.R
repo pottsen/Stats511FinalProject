@@ -26,15 +26,15 @@ data.set
 
 plot(d~ht,xlab="Height",ylab="Distance",type="n",
      main="Height vs Distance")
-points(ht[s1==1],          d[s1==1],          pch="S1")
-points(ht[s2==1],          d[s2==1],          pch="S2")
-points(ht[s1==0 & s2==0],  d[s1==0 & s2==0],  pch="Gr")
+points(ht[s1==1],          d[s1==1],          pch="1")
+points(ht[s2==1],          d[s2==1],          pch="2")
+points(ht[s1==0 & s2==0],  d[s1==0 & s2==0],  pch="G")
 
-plot(d~wt,xlab="Height",ylab="Distance",type="n",
-     main="Height vs Distance")
-points(wt[s1==1],          d[s1==1],          pch="S1")
-points(wt[s2==1],          d[s2==1],          pch="S2")
-points(wt[s1==0 & s2==0],  d[s1==0 & s2==0],  pch="Gr")
+plot(d~wt,xlab="Weight",ylab="Distance",type="n",
+     main="Weight vs Distance")
+points(wt[s1==1],          d[s1==1],          pch="1")
+points(wt[s2==1],          d[s2==1],          pch="2")
+points(wt[s1==0 & s2==0],  d[s1==0 & s2==0],  pch="G")
 
 plot(wt, log.d)
 plot(log.wt, log.d)
