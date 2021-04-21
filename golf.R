@@ -1,3 +1,9 @@
+# Questions:
+# What initial data inspection should we do?
+# Was our model determination process correct?
+# What discussion would you like to see for leverage/cook outliers?
+
+
 swings <-1:30
 ht <- c(71,71,76,77,74,69,69,76,69,72,
         73,75,69,74,73,77,76,78,68,69,
@@ -98,6 +104,75 @@ anova(model.5,model.6)        # Common slope vs Quad no interaction
 
 anova(model.6, model.8)       # Quad without interaction vs Quad with interaction
 anova(model.7, model.8)       # Separate Slope vs Quad with interaction
+
+
+# Quadratic with interaction
+f1 <- lm(d ~ ht + ht*s1 + ht*s2 + I(ht^2) + I(ht^2)*s1 + I(ht^2)*s2 + wt + wt*s1 + wt*s2 + I(wt^2) + I(wt^2)*s1 + I(wt^2)*s2 + s1 + s2)
+summary(f1)
+f2 <- lm(d ~ ht + ht*s1 + ht*s2 + I(ht^2) + I(ht^2)*s2 + wt + wt*s1 + wt*s2 + I(wt^2) + I(wt^2)*s1 + I(wt^2)*s2 + s1 + s2)
+summary(f2)
+anova(f2, f1)
+f3 <- lm(d ~ ht + ht*s1 + ht*s2 + I(ht^2) + wt + wt*s1 + wt*s2 + I(wt^2) + I(wt^2)*s1 + I(wt^2)*s2 + s1 + s2)
+anova(f3, f2)
+summary(f3)
+f4 <- lm(d ~ ht + ht*s1 + I(ht^2) + wt + wt*s1 + wt*s2 + I(wt^2) + I(wt^2)*s1 + I(wt^2)*s2 + s1 + s2)
+anova(f4, f3)
+summary(f4)
+# little to no evidence of difference between f4 and f5
+f5 <- lm(d ~ ht + ht*s1 + I(ht^2) + wt + wt*s1 + wt*s2 + I(wt^2) + I(wt^2)*s2 + s1 + s2)
+anova(f5, f4)
+summary(f5)
+# no evidence of difference between f5 and f6
+# BEST
+f6 <- lm(d ~ ht + ht*s1 + I(ht^2) + wt + wt*s2 + I(wt^2) + I(wt^2)*s2 + s1 + s2)
+anova(f6, f5)
+summary(f6)
+# MODERATE of difference between f6 and f7 so f6 IS BEST
+f7 <- lm(d ~ ht + ht*s1 + I(ht^2) + wt + wt*s2 + I(wt^2) + s1 + s2)
+anova(f7, f6)
+summary(f7)
+
+plot(f6,which=c(1,2),add.smooth=F)
+
+# Make a leverage plot with threshold horizontal line
+leverage.out <- lm.influence(f6)$hat
+leverage.out
+sort(leverage.out)
+plot(leverage.out, type="h", ylim=c(0,1),main="Leverage Plot")
+threshold <- 2*length(f6$coeff)/length(leverage.out)
+abline(h=threshold,lwd=2,lty=2)
+
+# Calculate and plot studentized residuals
+cbind(rstandard(f6),rstudent(f6))
+rstudent(f6)
+plot(f6$fit,rstudent(f6), type="n", 
+     main="Externally Studentized Residuals")
+text(f6$fit,rstudent(f6), swings)
+abline(h=-3,lwd=1.5,lty=2) 
+abline(h=-2,lwd=1.5,lty=2)
+abline(h= 0,lwd=1.5,lty=2)
+abline(h= 2,lwd=1.5,lty=2)
+abline(h= 3,lwd=1.5,lty=2)
+
+# Make a plot of Cook's distances
+cooks.out <- cooks.distance(f6)
+cooks.out
+sort(cooks.out)
+plot(swings,cooks.distance(f6),  type="h", 
+     main="Cook's Distances")
+abline(h= 1,lwd=1.5,lty=2)  
+
+plot(leverage.out, cooks.out, type = 'n', main="Cooks Distance vs Leverages")
+text(leverage.out, cooks.out, swings)
+abline(h=1, lty=2)
+abline(v=threshold, lty=2)
+
+
+
+
+
+
+
 
 RSS <- c(37933.5, 14350.652, 30456.1, 11629.800, 8470.952, 5751.845, 4728.033, 2087.649)
 stripchart(RSS, method = "stack", pch = 18, main = "RSS Comparison across Models", xlab = "Model RSS")
