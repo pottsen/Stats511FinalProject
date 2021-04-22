@@ -21,7 +21,7 @@ d <- c(196,209,220,229,211,164,157,227,158,177,
 
 shaft <- c(rep('Gr',10),rep('S1',10),rep('S2',10))
 
-# Make indicator variables for soil quality categories
+# Make indicator variables for shaft categories
 sg <- ifelse(shaft=='Gr',1,0)  # for graphite shaft
 s1 <- ifelse(shaft=='S1',1,0)  # for steel 1 shaft
 s2 <- ifelse(shaft=='S2',1,0)  # for steel 2 shaft 
@@ -48,89 +48,89 @@ points(wt[s1==0 & s2==0],  d[s1==0 & s2==0],  pch="G")
 # plot(log.ht, log.d)
 
 
-#Single Mean
-model.1 <- lm(d ~ 1)
-summary(model.1)
-aov(model.1)
+# #Single Mean
+# model.1 <- lm(d ~ 1)
+# summary(model.1)
+# aov(model.1)
+# 
+# #SLR
+# model.2 <- lm(d ~ ht + wt)
+# summary(model.2)
+# aov(model.2)
+# 
+# #Multi Mean (ANOVA)
+# model.3 <- lm(d ~ s1 + s2)
+# summary(model.3)
+# aov(model.3)
+# 
+# #Quadratic
+# model.4 <- lm(d ~ ht + I(ht^2) + wt + I(wt^2))
+# summary(model.4)
+# aov(model.4)
+# 
+# #SLR common slope without interaction
+# model.5 <- lm(d ~ ht + wt + s1 + s2)
+# summary(model.5)
+# aov(model.5)
+# 
+# #Quadratic without interaction
+# model.6 <- lm(d ~ ht + I(ht^2) + wt + I(wt^2) + s1 + s2)
+# summary(model.6)
+# aov(model.6)
+# 
+# #SLR with interaction
+# model.7 <- lm(d ~ ht + ht*s1 + ht*s2 + wt + wt*s1 + wt*s2 + s1 + s2)
+# summary(model.7)
+# aov(model.7)
+# 
+# # Quadratic with interaction
+# model.8 <- lm(d ~ ht + ht*s1 + ht*s2 + I(ht^2) + I(ht^2)*s1 + I(ht^2)*s2 + wt + wt*s1 + wt*s2 + I(wt^2) + I(wt^2)*s1 + I(wt^2)*s2 + s1 + s2)
+# summary(model.8)
+# aov(model.8)
 
-#SLR
-model.2 <- lm(d ~ ht + wt)
-summary(model.2)
-aov(model.2)
-
-#Multi Mean (ANOVA)
-model.3 <- lm(d ~ s1 + s2)
-summary(model.3)
-aov(model.3)
-
-#Quadratic
-model.4 <- lm(d ~ ht + I(ht^2) + wt + I(wt^2))
-summary(model.4)
-aov(model.4)
-
-#SLR common slope without interaction
-model.5 <- lm(d ~ ht + wt + s1 + s2)
-summary(model.5)
-aov(model.5)
-
-#Quadratic without interaction
-model.6 <- lm(d ~ ht + I(ht^2) + wt + I(wt^2) + s1 + s2)
-summary(model.6)
-aov(model.6)
-
-#SLR with interaction
-model.7 <- lm(d ~ ht + ht*s1 + ht*s2 + wt + wt*s1 + wt*s2 + s1 + s2)
-summary(model.7)
-aov(model.7)
-
-# Quadratic with interaction
-model.8 <- lm(d ~ ht + ht*s1 + ht*s2 + I(ht^2) + I(ht^2)*s1 + I(ht^2)*s2 + wt + wt*s1 + wt*s2 + I(wt^2) + I(wt^2)*s1 + I(wt^2)*s2 + s1 + s2)
-summary(model.8)
-aov(model.8)
-
-anova(model.1,model.2)        # Single mean vs SLR
-anova(model.1,model.3)        # Single mean vs ANOVA
-
-anova(model.2,model.4)        # SLR vs Quad
-anova(model.2,model.5)       # SLR vs Common Slope
-
-anova(model.3,model.5)        # ANOVA vs Common slope
-
-anova(model.4, model.6)       # Quad vs Quad without interaction
-
-anova(model.5,model.7)        # Common slope vs Separate slope
-anova(model.5,model.6)        # Common slope vs Quad no interaction
-
-anova(model.6, model.8)       # Quad without interaction vs Quad with interaction
-anova(model.7, model.8)       # Separate Slope vs Quad with interaction
+# anova(model.1,model.2)        # Single mean vs SLR
+# anova(model.1,model.3)        # Single mean vs ANOVA
+# 
+# anova(model.2,model.4)        # SLR vs Quad
+# anova(model.2,model.5)       # SLR vs Common Slope
+# 
+# anova(model.3,model.5)        # ANOVA vs Common slope
+# 
+# anova(model.4, model.6)       # Quad vs Quad without interaction
+# 
+# anova(model.5,model.7)        # Common slope vs Separate slope
+# anova(model.5,model.6)        # Common slope vs Quad no interaction
+# 
+# anova(model.6, model.8)       # Quad without interaction vs Quad with interaction
+# anova(model.7, model.8)       # Separate Slope vs Quad with interaction
 
 
-# Quadratic with interaction
-f1 <- lm(d ~ ht + ht*s1 + ht*s2 + I(ht^2) + I(ht^2)*s1 + I(ht^2)*s2 + wt + wt*s1 + wt*s2 + I(wt^2) + I(wt^2)*s1 + I(wt^2)*s2 + s1 + s2)
-summary(f1)
-# plot(f1,which=c(1,2),add.smooth=F)
-f2 <- lm(d ~ ht + ht*s1 + ht*s2 + I(ht^2) + I(ht^2)*s2 + wt + wt*s1 + wt*s2 + I(wt^2) + I(wt^2)*s1 + I(wt^2)*s2 + s1 + s2)
-summary(f2)
-anova(f2, f1)
-f3 <- lm(d ~ ht + ht*s1 + ht*s2 + I(ht^2) + wt + wt*s1 + wt*s2 + I(wt^2) + I(wt^2)*s1 + I(wt^2)*s2 + s1 + s2)
-anova(f3, f2)
-summary(f3)
-f4 <- lm(d ~ ht + ht*s1 + I(ht^2) + wt + wt*s1 + wt*s2 + I(wt^2) + I(wt^2)*s1 + I(wt^2)*s2 + s1 + s2)
-anova(f4, f3)
-summary(f4)
-# little to no evidence of difference between f4 and f5
-f5 <- lm(d ~ ht + ht*s1 + I(ht^2) + wt + wt*s1 + wt*s2 + I(wt^2) + I(wt^2)*s2 + s1 + s2)
-anova(f5, f4)
-summary(f5)
+# # Quadratic with interaction
+# f1 <- lm(d ~ ht + ht*s1 + ht*s2 + I(ht^2) + I(ht^2)*s1 + I(ht^2)*s2 + wt + wt*s1 + wt*s2 + I(wt^2) + I(wt^2)*s1 + I(wt^2)*s2 + s1 + s2)
+# summary(f1)
+# # plot(f1,which=c(1,2),add.smooth=F)
+# f2 <- lm(d ~ ht + ht*s1 + ht*s2 + I(ht^2) + I(ht^2)*s2 + wt + wt*s1 + wt*s2 + I(wt^2) + I(wt^2)*s1 + I(wt^2)*s2 + s1 + s2)
+# summary(f2)
+# anova(f2, f1)
+# f3 <- lm(d ~ ht + ht*s1 + ht*s2 + I(ht^2) + wt + wt*s1 + wt*s2 + I(wt^2) + I(wt^2)*s1 + I(wt^2)*s2 + s1 + s2)
+# anova(f3, f2)
+# summary(f3)
+# f4 <- lm(d ~ ht + ht*s1 + I(ht^2) + wt + wt*s1 + wt*s2 + I(wt^2) + I(wt^2)*s1 + I(wt^2)*s2 + s1 + s2)
+# anova(f4, f3)
+# summary(f4)
+# # little to no evidence of difference between f4 and f5
+# f5 <- lm(d ~ ht + ht*s1 + I(ht^2) + wt + wt*s1 + wt*s2 + I(wt^2) + I(wt^2)*s2 + s1 + s2)
+# anova(f5, f4)
+# summary(f5)
 # no evidence of difference between f5 and f6
 # BEST
 f6 <- lm(d ~ ht + ht*s1 + I(ht^2) + wt + wt*s2 + I(wt^2) + I(wt^2)*s2 + s1 + s2)
 anova(f6, f5)
 summary(f6)
-# MODERATE of difference between f6 and f7 so f6 IS BEST
-f7 <- lm(d ~ ht + ht*s1 + I(ht^2) + wt + wt*s2 + I(wt^2) + s1 + s2)
-anova(f7, f6)
-summary(f7)
+# # MODERATE of difference between f6 and f7 so f6 IS BEST
+# f7 <- lm(d ~ ht + ht*s1 + I(ht^2) + wt + wt*s2 + I(wt^2) + s1 + s2)
+# anova(f7, f6)
+# summary(f7)
 
 # log.f6 <- lm(d ~ log.ht + log.ht*s1 + I(log.ht^2) + log.wt + log.wt*s2 + I(log.wt^2) + I(log.wt^2)*s2 + s1 + s2)
 # plot(log.f6,which=c(1,2),add.smooth=F)
@@ -170,16 +170,16 @@ s1dist
 s2dist <- sum(betavec*S2Comb)
 s2dist
 
-LinearComb <- GraphComb - S1Comb 
-# t-stat:  0.6983098 
+# LinearComb <- GraphComb - S1Comb
+# t-stat:  -15098 , 20 removed 0.4042, 29 removed 0.7048501, 20&29 removed 0.4138922, 24 removed 0.6389115
 # 0   0  -1   0   0   0   0 -72   0   0
 
-#LinearComb <- GraphComb - S2Comb
-# t-stat: 6.262764e-05
+# LinearComb <- GraphComb - S2Comb
+# t-stat: 6.262764e-05, 20 removed 2.044125e-05, 29 removed 0.002578689, 20&29 removed 0.0010429283, 24 removed 8.989365e-06
 # 0      0      0      0      0     -1      0      0   -190 -36100
 
-#LinearComb <- S1Comb - S2Comb 
-# t-stat: 1.533610e-04
+LinearComb <- S1Comb - S2Comb
+# t-stat: 1.533610e-04, 20 removed 4.420336e-05, 29 removed 0.002910678, 20&29 removed 0.00087252, 24 removed 2.109759e-05 
 # 0      0      1      0      0     -1      0     72   -190 -36100
 
 
@@ -250,14 +250,33 @@ ht <- ht[-c(20)]
 length(ht)
 wt <- wt[-c(20)]
 d <- d[-c(20)]
+s1 <- s1[-c(20)]
+s2 <- s2[-c(20)]
 shaft <- shaft[-c(20)]
 
+ht <- ht[-c(29)]
+length(ht)
+wt <- wt[-c(29)]
+d <- d[-c(29)]
+s1 <- s1[-c(29)]
+s2 <- s2[-c(29)]
+shaft <- shaft[-c(29)]
 
+ht <- ht[-c(20, 29)]
+length(ht)
+wt <- wt[-c(20, 29)]
+d <- d[-c(20, 29)]
+s1 <- s1[-c(20, 29)]
+s2 <- s2[-c(20, 29)]
+shaft <- shaft[-c(20, 29)]
 
-
-
-
-
+ht <- ht[-c(24)]
+length(ht)
+wt <- wt[-c(24)]
+d <- d[-c(24)]
+s1 <- s1[-c(24)]
+s2 <- s2[-c(24)]
+shaft <- shaft[-c(24)]
 
 # RSS <- c(37933.5, 14350.652, 30456.1, 11629.800, 8470.952, 5751.845, 4728.033, 2087.649)
 # stripchart(RSS, method = "stack", pch = 18, main = "RSS Comparison across Models", xlab = "Model RSS")
